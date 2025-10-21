@@ -4,6 +4,7 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import './globals.css';
 import { Roboto } from 'next/font/google';
+import AuthProvider from '../components/AuthProvider/AuthProvider';
 
 const roboto = Roboto({
   weight: ['400', '500', '700'],
@@ -15,6 +16,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: 'NoteHub - Your Personal Note Management App',
   description: 'NoteHub is a powerful and intuitive application for creating, organizing, and managing your personal notes efficiently.',
+    icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: 'NoteHub - Your Personal Note Management App',
     description: 'NoteHub is a powerful and intuitive application for creating, organizing, and managing your personal notes efficiently.',
@@ -44,6 +48,7 @@ export default function RootLayout({
     <html lang="en" className={roboto.variable}>
       <body>
         <TanStackProvider>
+          <AuthProvider>
           <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
             <main style={{ flex: 1 }}>
@@ -52,6 +57,7 @@ export default function RootLayout({
             <Footer />
           </div>
           {modal}
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
