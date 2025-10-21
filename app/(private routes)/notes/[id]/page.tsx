@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { fetchNoteById } from '@/lib/api';
+import { fetchNoteById } from '@/lib/api/serverApi';
 import getQueryClient from '@/app/utils/getQueryClient';
-import NotePreviewClient from '../../@modal/(.)notes/[id]/NotePreview.client';
+import NotePreviewClient from '@/components/NotePreview/NotePreview';
 import type { Metadata } from 'next';
 
 interface NotePageProps {
@@ -20,7 +20,8 @@ export async function generateMetadata({ params }: NotePageProps): Promise<Metad
       openGraph: {
         title: `${note.title} - NoteHub`,
         description: note.content.substring(0, 160) + (note.content.length > 160 ? '...' : ''),
-        url: `https://vercel.com/new/olenas-projects-81ca86a5/success?developer-id=&external-id=&redirect-url=&branch=main&deploymentUrl=07-routing-nextjs-j99qmfeh0-olenas-projects-81ca86a5.vercel.app&projectName=07-routing-nextjs&s=https%3A%2F%2Fgithub.com%2FOlenaZhmudenko%2F07-routing-nextjs&gitOrgLimit=&hasTrialAvailable=1&totalProjects=1&flow-id=N5KH7YGpWN6gircyGJqOg/notes/${id}`,
+        url: `https://notehub.com/notes/${id}`,
+        siteName: 'NoteHub',
         images: [
           {
             url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: NotePageProps): Promise<Metad
         ],
       },
     };
-  } catch (error) {
+  } catch {
     return {
       title: 'Note Not Found - NoteHub',
       description: 'The requested note could not be found in your NoteHub application.',
