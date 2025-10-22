@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { fetchNotes, FetchNotesParams } from '@/lib/api';
+import { fetchNotes, FetchNotesParams } from '@/lib/api/clientApi';
 import { NoteTag } from '@/types/note';
 import NoteList from '@/components/NoteList/NoteList';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Pagination from '@/components/Pagination/Pagination';
 import { useDebounce } from '@/app/hooks/useDebounce';
 import css from './NotesPage.module.css';
-import type { FetchNotesResponse } from '@/lib/api';
+import type { FetchNotesResponse } from '@/lib/api/clientApi';
 
 const NOTES_PER_PAGE = 12;
 
