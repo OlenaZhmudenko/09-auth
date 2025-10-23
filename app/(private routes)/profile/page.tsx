@@ -1,37 +1,28 @@
-'use client';
-
-import { useAuthStore } from '@/lib/store/authStore';
-import { useEffect } from 'react';
-import { getMe } from '@/lib/api/clientApi';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { getMe } from '@/lib/api/serverApi';
 import css from './ProfilePage.module.css';
 
-export default function ProfilePage() {
-  const { user, setUser } = useAuthStore();
+export const metadata: Metadata = {
+  title: 'Profile - NoteHub',
+  description: 'View and manage your NoteHub profile',
+};
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getMe();
-        setUser(userData);
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-      }
-    };
-
-    fetchUser();
-  }, [setUser]);
+export default async function ProfilePage() {
+  const user = await getMe();
 
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
         <div className={css.header}>
           <h1 className={css.formTitle}>Profile Page</h1>
-          <a href="/profile/edit" className={css.editProfileButton}>
+          <Link href="/profile/edit" className={css.editProfileButton}>
             Edit Profile
-          </a>
+          </Link>
         </div>
         <div className={css.avatarWrapper}>
-          <img
+          <Image
             src={user?.avatar || "https://ac.goit.global/fullstack/react/static/default-avatar.png"}
             alt="User Avatar"
             width={120}

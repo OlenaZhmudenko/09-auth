@@ -1,7 +1,6 @@
-
 import { api } from './api';
 import { User } from '@/types/user';
-import { Note, NoteTag } from '@/types/note'
+import { Note, NoteTag } from '@/types/note';
 
 export interface LoginData {
   email: string;
@@ -32,62 +31,22 @@ export interface FetchNotesResponse {
 }
 
 export const login = async (data: LoginData): Promise<User> => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Login failed');
-  }
-
-  return response.json();
+  const response = await api.post('/auth/login', data);
+  return response.data;
 };
 
 export const register = async (data: RegisterData): Promise<User> => {
-  const response = await fetch('/api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Registration failed');
-  }
-
-  return response.json();
-};
+  const response = await api.post('/auth/register', data); 
+  return response.data;
+};  
 
 export const logout = async (): Promise<void> => {
-  const response = await fetch('/api/auth/logout', {
-    method: 'POST',
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    throw new Error('Logout failed');
-  }
+  await api.post('/auth/logout');
 };
 
 export const checkSession = async (): Promise<User | null> => {
-  const response = await fetch('/api/auth/session', {
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    return null;
-  }
-
-  return response.json();
+  const response = await api.get('/auth/session');
+  return response.data || null;
 };
 
 export const getMe = async (): Promise<User> => {
@@ -115,6 +74,7 @@ export const createNote = async (data: Omit<Note, 'id' | 'createdAt' | 'updatedA
   return response.data;
 };
 
-export const deleteNote = async (id: string): Promise<void> => {
-  await api.delete(`/notes/${id}`);
+export const deleteNote = async (id: string): Promise<Note> => {
+  const response = await api.delete(`/notes/${id}`);
+  return response.data;
 };

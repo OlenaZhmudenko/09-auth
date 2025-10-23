@@ -29,12 +29,12 @@ export default function EditProfilePage() {
     fetchUser();
   }, [setUser]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAction = async (formData: FormData) => {
     setIsSaving(true);
 
     try {
-      const updatedUser = await updateMe({ username });
+      const formUsername = formData.get('username') as string;
+      const updatedUser = await updateMe({ username: formUsername });
       setUser(updatedUser);
       router.push('/profile');
     } catch (error) {
@@ -65,11 +65,12 @@ export default function EditProfilePage() {
           className={css.avatar}
         />
 
-        <form className={css.profileInfo} onSubmit={handleSubmit}>
+        <form action={handleAction} className={css.profileInfo}>
           <div className={css.usernameWrapper}>
             <label htmlFor="username">Username:</label>
             <input
               id="username"
+              name="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
