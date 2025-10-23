@@ -11,19 +11,28 @@ export async function middleware(request: NextRequest) {
 
   if (!accessToken && refreshToken && isPrivateRoute) { 
     try {
-      const response = await fetch(new URL('/api/auth/session', request.url), 
-  {
+      const response = await fetch(new URL('/api/auth/session', request.url), {
       method: 'GET',
       headers: {
         Cookie: `refreshToken=${refreshToken.value}`
       }
     });
 
-    if (response.ok) {
+    if (response.ok) { 
+      const setCookieHeader = response.headers.get('set-cookie');
+
+      if (setCookieHeader) {
+        const newResponse = NextResponse.next();
+        newResponse.headers.append('Set-Cookie', setCookieHeader);
+        return newResponse;
+      }
       return NextResponse.next();
-    }
+    } else {
+      return NextResponse.redirect(new URL('/sign-in', request.url));
+      }
     } catch (error) {
       console.error('Session refresh failed', error);
+      return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
 

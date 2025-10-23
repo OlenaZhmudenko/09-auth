@@ -19,6 +19,7 @@ export default function EditProfilePage() {
       try {
         const userData = await getMe();
         setUsername(userData.username);
+        setUser(userData);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
       } finally {
@@ -45,7 +46,7 @@ export default function EditProfilePage() {
   };
 
   const handleCancel = () => {
-    router.push('/profile');
+    router.back();
   };
 
   if (isLoading) {
