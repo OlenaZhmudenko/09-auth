@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get('accessToken');
-  const refreshToken = request.cookies.get('refreshToken');
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken');
+  const refreshToken = cookieStore.get('refreshToken');
   const { pathname } = request.nextUrl;
 
   const isAuthRoute = pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up');
@@ -43,7 +45,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (hasValidTokens && isAuthRoute) {
-    return NextResponse.redirect(new URL('/profile', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
