@@ -13,7 +13,8 @@ export async function middleware(request: NextRequest) {
 
   if (!accessToken && refreshToken && isPrivateRoute) { 
     try {
-      const response = await fetch(new URL('/api/auth/session', request.url), {
+      const apiUrl = new URL('/api/auth/session', request.url);
+      const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
         Cookie: `refreshToken=${refreshToken.value}`

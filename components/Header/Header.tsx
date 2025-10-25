@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import css from './Header.module.css';
 import TagsMenu from '../TagsMenu/TagsMenu';
+import AuthNavigation from '../AuthNavigation/AuthNavigation';
 
 export default function Header() {
   return (
@@ -20,6 +21,9 @@ export default function Header() {
             <Link href="/notes/action/create" className={css.navigationLink}>
               Create Note +
             </Link>
+          </li>
+          <li className={css.navigationItem}>
+            <AuthNavigation />
           </li>
         </ul>
       </nav>
